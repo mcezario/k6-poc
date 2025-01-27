@@ -43,18 +43,18 @@ export const options = {
         },
         spike: {
             executor: 'ramping-arrival-rate',
-            exec: 'clubs',
+            exec: 'products',
             startTime: '10s',
             stages: [
                 { target: 20000, duration: '2m' }, // fast ramp-up to a high point
                 { target: 0, duration: '30s' }, // ramp down back to 0 iters/s over the last 30 second
             ],
             preAllocatedVUs: 20000, // how large the initial pool of VUs would be
-            tags: { test_id: 'clubs' }
+            tags: { test_id: 'products' }
         },
         stress: {
             executor: 'ramping-arrival-rate',
-            exec: 'clubs',
+            exec: 'products',
             startTime: '2m', // the ramping API test starts a little later
             startRate: 50,
             timeUnit: '1s', // we start at 50 iterations per second
@@ -65,7 +65,7 @@ export const options = {
             ],
             preAllocatedVUs: 50, // how large the initial pool of VUs would be
             maxVUs: 100, // if the preAllocatedVUs are not enough, we can initialize more
-            tags: { test_id: 'clubs' }
+            tags: { test_id: 'products' }
         }
     },
     thresholds: {
@@ -75,9 +75,9 @@ export const options = {
     },
 };
 
-export async function clubs(product_sku) {
+export async function products(product_sku) {
     let param1 = await kv.get("param1");
-    let res = http.get(`http://stubmatic:7777/clubs?product_sku=${product_sku}&param_a=${param1}&param_b=${params[Math.floor(Math.random() * params.length)]}`);
+    let res = http.get(`http://stubmatic:7777/products?product_sku=${product_sku}&param_a=${param1}&param_b=${params[Math.floor(Math.random() * params.length)]}`);
     check(res, { "status is 200": (res) => res.status === 200 });
 }
 
