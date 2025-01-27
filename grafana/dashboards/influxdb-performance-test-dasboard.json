@@ -1,0 +1,2526 @@
+{
+    "annotations": {
+        "list": [
+            {
+                "builtIn": 1,
+                "datasource": {
+                    "type": "datasource",
+                    "uid": "grafana"
+                },
+                "enable": true,
+                "hide": true,
+                "iconColor": "rgba(0, 211, 255, 1)",
+                "name": "Annotations & Alerts",
+                "target": {
+                    "limit": 100,
+                    "matchAny": false,
+                    "tags": [],
+                    "type": "dashboard"
+                },
+                "type": "dashboard"
+            }
+        ]
+    },
+    "description": "A dashboard for visualizing results from the k6.io load testing tool, using the InfluxDB exporter.\r\n\r\ninspire from https://grafana.com/dashboards/2587 & k6 cloud dashboard.\r\n\r\nsimple & informative dashboard\r\n\r\n",
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "gnetId": 14801,
+    "graphTooltip": 2,
+    "id": 1,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+        {
+            "datasource": {
+                "type": "influxdb",
+                "uid": "${data_source}"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    }
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "http_reqs.sum"
+                        },
+                        "properties": [
+                            {
+                                "id": "unit",
+                                "value": "none"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 5,
+                "w": 4,
+                "x": 0,
+                "y": 0
+            },
+            "id": 78,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "max"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "text": {},
+                "textMode": "value"
+            },
+            "pluginVersion": "9.3.8",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${data_source}"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "null"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "measurement": "data_sent",
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "SELECT sum(\"value\")/${interval_value} FROM \"http_reqs\" WHERE \"test_id\" =~ /$test_id/ AND $timeFilter GROUP BY time(${interval_value}s) fill(null)",
+                    "rawQuery": true,
+                    "refId": "A",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "params": [],
+                                "type": "mean"
+                            }
+                        ]
+                    ],
+                    "tags": []
+                }
+            ],
+            "title": "Peak RPS ",
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "influxdb",
+                "uid": "${data_source}"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "ms"
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "http_req_duration.max"
+                        },
+                        "properties": [
+                            {
+                                "id": "unit",
+                                "value": "ms"
+                            },
+                            {
+                                "id": "thresholds",
+                                "value": {
+                                    "mode": "absolute",
+                                    "steps": [
+                                        {
+                                            "color": "green",
+                                            "value": null
+                                        },
+                                        {
+                                            "color": "super-light-orange",
+                                            "value": 500
+                                        },
+                                        {
+                                            "color": "light-orange",
+                                            "value": 3000
+                                        },
+                                        {
+                                            "color": "red",
+                                            "value": 30000
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 5,
+                "w": 4,
+                "x": 4,
+                "y": 0
+            },
+            "id": 77,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "max"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "text": {},
+                "textMode": "value"
+            },
+            "pluginVersion": "9.3.8",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${data_source}"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "null"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "measurement": "data_sent",
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "SELECT max(\"value\") FROM \"http_req_duration\" WHERE  \"test_id\" =~ /$test_id/ and $timeFilter GROUP BY time(${interval_value}s) fill(null)",
+                    "rawQuery": true,
+                    "refId": "A",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "params": [],
+                                "type": "mean"
+                            }
+                        ]
+                    ],
+                    "tags": []
+                }
+            ],
+            "title": "Max Response Time",
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "influxdb",
+                "uid": "${data_source}"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        }
+                    },
+                    "mappings": []
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 5,
+                "w": 4,
+                "x": 8,
+                "y": 0
+            },
+            "id": 87,
+            "links": [],
+            "maxDataPoints": 100,
+            "options": {
+                "legend": {
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "pieType": "donut",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "9.3.8",
+            "targets": [
+                {
+                    "alias": "error",
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${data_source}"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "null"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "measurement": "data_sent",
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "SELECT sum(\"value\") FROM \"http_reqs\" WHERE (\"status\" != '200' AND \"status\" != '201') AND \"test_id\" =~ /$test_id/ AND $timeFilter group by time(${interval_value}s)",
+                    "rawQuery": true,
+                    "refId": "A",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "params": [],
+                                "type": "mean"
+                            }
+                        ]
+                    ],
+                    "tags": []
+                },
+                {
+                    "alias": "total",
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${data_source}"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "null"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "hide": false,
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "SELECT sum(\"value\") FROM \"http_reqs\" WHERE \"test_id\" =~ /$test_id/ AND $timeFilter GROUP BY time(${interval_value}s) fill(null)",
+                    "rawQuery": true,
+                    "refId": "B",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "params": [],
+                                "type": "mean"
+                            }
+                        ]
+                    ],
+                    "tags": []
+                }
+            ],
+            "title": "Error Rate",
+            "type": "piechart"
+        },
+        {
+            "datasource": {
+                "type": "influxdb",
+                "uid": "${data_source}"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    }
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "http_reqs.sum"
+                        },
+                        "properties": [
+                            {
+                                "id": "unit",
+                                "value": "none"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 10,
+                "w": 11,
+                "x": 13,
+                "y": 0
+            },
+            "id": 74,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "sum"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "text": {},
+                "textMode": "value"
+            },
+            "pluginVersion": "9.3.8",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${data_source}"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "null"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "measurement": "data_sent",
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "SELECT sum(\"value\") FROM \"http_reqs\" WHERE \"test_id\" =~ /$test_id/ AND  $timeFilter GROUP BY time(${interval_value}s) fill(null)",
+                    "rawQuery": true,
+                    "refId": "A",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "params": [],
+                                "type": "mean"
+                            }
+                        ]
+                    ],
+                    "tags": []
+                }
+            ],
+            "title": "Request Made",
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "influxdb",
+                "uid": "${data_source}"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "decimals": 0,
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    }
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "http_reqs.sum"
+                        },
+                        "properties": [
+                            {
+                                "id": "unit",
+                                "value": "none"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 5,
+                "w": 4,
+                "x": 0,
+                "y": 5
+            },
+            "id": 84,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "max"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "text": {},
+                "textMode": "auto"
+            },
+            "pluginVersion": "9.3.8",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${data_source}"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "null"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "measurement": "data_sent",
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "SELECT max(\"value\") FROM \"vus_max\" WHERE \"my_custom_tag\" =~ /$test_id/ AND  $timeFilter GROUP BY time(${interval_value}s) fill(null)",
+                    "rawQuery": true,
+                    "refId": "A",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "params": [],
+                                "type": "mean"
+                            }
+                        ]
+                    ],
+                    "tags": []
+                }
+            ],
+            "title": "VUS Max ",
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "influxdb",
+                "uid": "${data_source}"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "decimals": 2,
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "ms"
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "http_req_duration.mean"
+                        },
+                        "properties": [
+                            {
+                                "id": "unit",
+                                "value": "ms"
+                            },
+                            {
+                                "id": "thresholds",
+                                "value": {
+                                    "mode": "absolute",
+                                    "steps": [
+                                        {
+                                            "color": "green",
+                                            "value": null
+                                        },
+                                        {
+                                            "color": "super-light-orange",
+                                            "value": 500
+                                        },
+                                        {
+                                            "color": "light-orange",
+                                            "value": 3000
+                                        },
+                                        {
+                                            "color": "red",
+                                            "value": 30000
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 5,
+                "w": 4,
+                "x": 4,
+                "y": 5
+            },
+            "id": 80,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "mean"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "text": {},
+                "textMode": "value"
+            },
+            "pluginVersion": "9.3.8",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${data_source}"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "null"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "measurement": "data_sent",
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "SELECT mean(\"value\") FROM \"http_req_duration\" WHERE \"test_id\" =~ /$test_id/ AND  $timeFilter GROUP BY time(${interval_value}s) fill(null)",
+                    "rawQuery": true,
+                    "refId": "A",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "params": [],
+                                "type": "mean"
+                            }
+                        ]
+                    ],
+                    "tags": []
+                }
+            ],
+            "title": "Average Response Time",
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "influxdb",
+                "uid": "${data_source}"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    }
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "http_reqs.sum"
+                        },
+                        "properties": [
+                            {
+                                "id": "unit",
+                                "value": "none"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 5,
+                "w": 4,
+                "x": 8,
+                "y": 5
+            },
+            "id": 79,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "sum"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "text": {},
+                "textMode": "value"
+            },
+            "pluginVersion": "9.3.8",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${data_source}"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "null"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "measurement": "data_sent",
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "SELECT sum(\"value\") FROM \"http_reqs\" WHERE (\"status\" != '200' AND \"status\" != '201') AND  \"test_id\" =~ /$test_id/ AND $timeFilter group by time(${interval_value}s)",
+                    "rawQuery": true,
+                    "refId": "A",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "params": [],
+                                "type": "mean"
+                            }
+                        ]
+                    ],
+                    "tags": []
+                }
+            ],
+            "title": "HTTP Failures",
+            "type": "stat"
+        },
+        {
+            "aliasColors": {
+                "http_req_duration.Response_Time": "dark-purple"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": {
+                "type": "influxdb",
+                "uid": "${data_source}"
+            },
+            "fill": 1,
+            "fillGradient": 2,
+            "gridPos": {
+                "h": 10,
+                "w": 24,
+                "x": 0,
+                "y": 10
+            },
+            "hiddenSeries": false,
+            "id": 75,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "hideEmpty": false,
+                "max": true,
+                "min": false,
+                "rightSide": true,
+                "show": true,
+                "total": true,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "nullPointMode": "null",
+            "options": {
+                "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "9.3.8",
+            "pointradius": 4,
+            "points": true,
+            "renderer": "flot",
+            "seriesOverrides": [
+                {
+                    "$$hashKey": "object:219",
+                    "alias": "http_reqs.sum",
+                    "yaxis": 1
+                },
+                {
+                    "$$hashKey": "object:220",
+                    "alias": "http_req_duration.Response_Time",
+                    "yaxis": 2
+                },
+                {
+                    "$$hashKey": "object:221",
+                    "alias": "http_reqs.RPS",
+                    "yaxis": 1
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${data_source}"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "null"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "measurement": "data_sent",
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "SELECT sum(\"value\") FROM \"http_reqs\" WHERE \"test_id\" =~ /$test_id/ AND  $timeFilter GROUP BY time(${interval_value}s) fill(null)",
+                    "rawQuery": true,
+                    "refId": "A",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "params": [],
+                                "type": "mean"
+                            }
+                        ]
+                    ],
+                    "tags": []
+                },
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${data_source}"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "null"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "SELECT sum(\"value\")/${interval_value} as RPS FROM \"http_reqs\" WHERE \"test_id\" =~ /$test_id/ AND  $timeFilter GROUP BY time(${interval_value}s) fill(null)",
+                    "rawQuery": true,
+                    "refId": "B",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "params": [],
+                                "type": "mean"
+                            }
+                        ]
+                    ],
+                    "tags": []
+                },
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${data_source}"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "null"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "SELECT sum(\"value\") as iteration FROM \"iterations\" WHERE \"test_id\" =~ /$test_id/ AND  $timeFilter GROUP BY time(${interval_value}s) fill(null)",
+                    "rawQuery": true,
+                    "refId": "C",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "params": [],
+                                "type": "mean"
+                            }
+                        ]
+                    ],
+                    "tags": []
+                },
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${data_source}"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "null"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "SELECT mean(\"value\") as VUS FROM \"vus\" WHERE  \"test_id\" =~ /$test_id/ AND $timeFilter GROUP BY time(${interval_value}s) fill(null)",
+                    "rawQuery": true,
+                    "refId": "D",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "params": [],
+                                "type": "mean"
+                            }
+                        ]
+                    ],
+                    "tags": []
+                },
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${data_source}"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "null"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "SELECT mean(\"value\") as Response_Time FROM \"http_req_duration\" WHERE \"test_id\" =~ /$test_id/ AND  $timeFilter GROUP BY time(${interval_value}s) fill(null)",
+                    "rawQuery": true,
+                    "refId": "E",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "params": [],
+                                "type": "mean"
+                            }
+                        ]
+                    ],
+                    "tags": []
+                }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "ALL METRICS ",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "transformations": [],
+            "type": "graph",
+            "xaxis": {
+                "mode": "time",
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "none",
+                    "label": "Request Per Second (rps)",
+                    "logBase": 1,
+                    "show": true
+                },
+                {
+                    "format": "ms",
+                    "label": "Time",
+                    "logBase": 2,
+                    "min": "1",
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": -2
+            }
+        },
+        {
+            "datasource": {
+                "type": "influxdb",
+                "uid": "${data_source}"
+            },
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "fillOpacity": 80,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "lineWidth": 1
+                    },
+                    "displayName": "Request per second (in ms)",
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": [
+                    {
+                        "__systemRef": "hideSeriesFrom",
+                        "matcher": {
+                            "id": "byNames",
+                            "options": {
+                                "mode": "exclude",
+                                "names": [
+                                    "Request per second (in ms)"
+                                ],
+                                "prefix": "All except:",
+                                "readOnly": true
+                            }
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.hideFrom",
+                                "value": {
+                                    "legend": false,
+                                    "tooltip": false,
+                                    "viz": true
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 24,
+                "x": 0,
+                "y": 20
+            },
+            "id": 89,
+            "options": {
+                "bucketOffset": 0,
+                "combine": true,
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true
+                }
+            },
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${data_source}"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "null"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "measurement": "http_req_duration",
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "SELECT (\"value\") as Response_Time FROM \"http_req_duration\" WHERE \"test_id\" =~ /$test_id/ AND $timeFilter  fill(null)",
+                    "rawQuery": true,
+                    "refId": "A",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "params": [],
+                                "type": "first"
+                            }
+                        ]
+                    ],
+                    "tags": []
+                }
+            ],
+            "title": "Histogram - Response Time",
+            "type": "histogram"
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": {
+                "type": "influxdb",
+                "uid": "${data_source}"
+            },
+            "fieldConfig": {
+                "defaults": {},
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "http_reqs.sum"
+                        },
+                        "properties": [
+                            {
+                                "id": "unit",
+                                "value": "none"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "fill": 1,
+            "fillGradient": 2,
+            "gridPos": {
+                "h": 10,
+                "w": 24,
+                "x": 0,
+                "y": 28
+            },
+            "hiddenSeries": false,
+            "id": 85,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "hideEmpty": false,
+                "max": true,
+                "min": false,
+                "show": true,
+                "total": true,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "nullPointMode": "null",
+            "options": {
+                "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "9.3.8",
+            "pointradius": 4,
+            "points": true,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${data_source}"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "null"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "measurement": "data_sent",
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "SELECT sum(\"value\") FROM \"http_reqs\" WHERE \"test_id\" =~ /$test_id/ AND $timeFilter GROUP BY time(3s) fill(null)",
+                    "rawQuery": true,
+                    "refId": "A",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "params": [],
+                                "type": "mean"
+                            }
+                        ]
+                    ],
+                    "tags": []
+                }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Request ",
+            "tooltip": {
+                "shared": false,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "mode": "time",
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "none",
+                    "label": "Total Request ",
+                    "logBase": 1,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "logBase": 1,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": {
+                "type": "influxdb",
+                "uid": "${data_source}"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "unit": "ms"
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "http_reqs.sum"
+                        },
+                        "properties": [
+                            {
+                                "id": "unit",
+                                "value": "none"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "fill": 1,
+            "fillGradient": 2,
+            "gridPos": {
+                "h": 10,
+                "w": 24,
+                "x": 0,
+                "y": 38
+            },
+            "hiddenSeries": false,
+            "id": 86,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "hideEmpty": false,
+                "max": true,
+                "min": false,
+                "show": true,
+                "total": true,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "nullPointMode": "null",
+            "options": {
+                "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "9.3.8",
+            "pointradius": 4,
+            "points": true,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${data_source}"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "null"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "measurement": "data_sent",
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "SELECT mean(\"value\") as Response_Time FROM \"http_req_duration\" WHERE \"test_id\" =~ /$test_id/ AND  $timeFilter GROUP BY time(${interval_value}s) fill(null)",
+                    "rawQuery": true,
+                    "refId": "A",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "params": [],
+                                "type": "mean"
+                            }
+                        ]
+                    ],
+                    "tags": []
+                }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Response Time ",
+            "tooltip": {
+                "shared": false,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "mode": "time",
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "ms",
+                    "label": "Response Time",
+                    "logBase": 1,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "logBase": 1,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": {
+                "type": "influxdb",
+                "uid": "${data_source}"
+            },
+            "fieldConfig": {
+                "defaults": {},
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "http_reqs.sum"
+                        },
+                        "properties": [
+                            {
+                                "id": "unit",
+                                "value": "none"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "fill": 1,
+            "fillGradient": 2,
+            "gridPos": {
+                "h": 10,
+                "w": 24,
+                "x": 0,
+                "y": 48
+            },
+            "hiddenSeries": false,
+            "id": 73,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "hideEmpty": false,
+                "max": true,
+                "min": false,
+                "show": true,
+                "total": true,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "nullPointMode": "null",
+            "options": {
+                "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "9.3.8",
+            "pointradius": 4,
+            "points": true,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${data_source}"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "null"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "measurement": "data_sent",
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "SELECT sum(\"value\")/${interval_value} FROM \"http_reqs\" WHERE \"test_id\" =~ /$test_id/ AND  $timeFilter GROUP BY time(${interval_value}s) fill(null)",
+                    "rawQuery": true,
+                    "refId": "A",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "params": [],
+                                "type": "mean"
+                            }
+                        ]
+                    ],
+                    "tags": []
+                }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Request Per Second",
+            "tooltip": {
+                "shared": false,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "mode": "time",
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "none",
+                    "label": "Request Per Second (rps)",
+                    "logBase": 1,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "logBase": 1,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": {
+                "type": "influxdb",
+                "uid": "${data_source}"
+            },
+            "fieldConfig": {
+                "defaults": {},
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "http_reqs.sum"
+                        },
+                        "properties": [
+                            {
+                                "id": "unit",
+                                "value": "none"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "fill": 1,
+            "fillGradient": 2,
+            "gridPos": {
+                "h": 10,
+                "w": 24,
+                "x": 0,
+                "y": 58
+            },
+            "hiddenSeries": false,
+            "id": 82,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "hideEmpty": false,
+                "max": true,
+                "min": false,
+                "show": true,
+                "total": true,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "nullPointMode": "null",
+            "options": {
+                "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "9.3.8",
+            "pointradius": 4,
+            "points": true,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${data_source}"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "null"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "measurement": "data_sent",
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "SELECT sum(\"value\") FROM \"iterations\" WHERE \"test_id\" =~ /$test_id/ AND  $timeFilter GROUP BY time(${interval_value}s) fill(null)",
+                    "rawQuery": true,
+                    "refId": "A",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "params": [],
+                                "type": "mean"
+                            }
+                        ]
+                    ],
+                    "tags": []
+                }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Iteration ",
+            "tooltip": {
+                "shared": false,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "mode": "time",
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "none",
+                    "label": "Request Per Second (rps)",
+                    "logBase": 1,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "logBase": 1,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": {
+                "type": "influxdb",
+                "uid": "${data_source}"
+            },
+            "fieldConfig": {
+                "defaults": {},
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "http_reqs.sum"
+                        },
+                        "properties": [
+                            {
+                                "id": "unit",
+                                "value": "none"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "fill": 1,
+            "fillGradient": 2,
+            "gridPos": {
+                "h": 11,
+                "w": 24,
+                "x": 0,
+                "y": 68
+            },
+            "hiddenSeries": false,
+            "id": 81,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "hideEmpty": false,
+                "max": true,
+                "min": false,
+                "show": true,
+                "total": true,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "nullPointMode": "null",
+            "options": {
+                "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "9.3.8",
+            "pointradius": 4,
+            "points": true,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${data_source}"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "null"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "measurement": "data_sent",
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "SELECT mean(\"value\") FROM \"vus\" WHERE  \"test_id\" =~ /$test_id/ AND $timeFilter GROUP BY time(${interval_value}s) fill(null)",
+                    "rawQuery": true,
+                    "refId": "A",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "params": [],
+                                "type": "mean"
+                            }
+                        ]
+                    ],
+                    "tags": []
+                }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Average VUS ",
+            "tooltip": {
+                "shared": false,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "mode": "time",
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "none",
+                    "label": "Request Per Second (rps)",
+                    "logBase": 1,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "logBase": 1,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false
+            }
+        },
+        {
+            "datasource": {
+                "type": "influxdb",
+                "uid": "${data_source}"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {
+                        "align": "auto",
+                        "displayMode": "auto",
+                        "filterable": false,
+                        "inspect": false
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "P95 (Response TIme)"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.displayMode",
+                                "value": "color-background"
+                            },
+                            {
+                                "id": "unit",
+                                "value": "ms"
+                            },
+                            {
+                                "id": "thresholds",
+                                "value": {
+                                    "mode": "absolute",
+                                    "steps": [
+                                        {
+                                            "color": "green",
+                                            "value": null
+                                        },
+                                        {
+                                            "color": "super-light-orange",
+                                            "value": 200
+                                        },
+                                        {
+                                            "color": "light-orange",
+                                            "value": 3000
+                                        },
+                                        {
+                                            "color": "red",
+                                            "value": 30000
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "MIN (Response TIme)"
+                        },
+                        "properties": [
+                            {
+                                "id": "unit",
+                                "value": "ms"
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "AVG (Response TIme)"
+                        },
+                        "properties": [
+                            {
+                                "id": "unit",
+                                "value": "ms"
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "MAX (Response TIme)"
+                        },
+                        "properties": [
+                            {
+                                "id": "unit",
+                                "value": "ms"
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "P99 (Response TIme)"
+                        },
+                        "properties": [
+                            {
+                                "id": "unit",
+                                "value": "ms"
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "URL"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.width",
+                                "value": 549
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 11,
+                "w": 24,
+                "x": 0,
+                "y": 79
+            },
+            "id": 83,
+            "options": {
+                "footer": {
+                    "fields": "",
+                    "reducer": [
+                        "sum"
+                    ],
+                    "show": false
+                },
+                "showHeader": true,
+                "sortBy": [
+                    {
+                        "desc": true,
+                        "displayName": "P95 (Response TIme)"
+                    }
+                ]
+            },
+            "pluginVersion": "9.3.8",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${data_source}"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "null"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "hide": true,
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "SELECT status from (SELECT \"method\", \"value\" FROM \"http_req_duration\" WHERE \"test_id\" =~ /$test_id/ AND  $timeFilter GROUP BY \"name\",\"status\" )",
+                    "rawQuery": true,
+                    "refId": "B",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "params": [],
+                                "type": "mean"
+                            }
+                        ]
+                    ],
+                    "tags": []
+                },
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${data_source}"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "null"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "hide": true,
+                    "measurement": "data_sent",
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "SELECT count(*),\"status\" from (SELECT \"method\", \"value\", \"status\" FROM \"http_req_duration\" WHERE \"test_id\" =~ /$test_id/ AND  $timeFilter GROUP BY \"name\",\"status\" )",
+                    "rawQuery": true,
+                    "refId": "A",
+                    "resultFormat": "table",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "params": [],
+                                "type": "mean"
+                            }
+                        ]
+                    ],
+                    "tags": []
+                },
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${data_source}"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "null"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "hide": false,
+                    "measurement": "http_req_duration",
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "SELECT percentile(\"value\", 95) as PERCENTILE_95, percentile(\"value\", 99) as PERCENTILE_99, max(\"value\") as  max_response_time, mean(\"value\") as  avg_response_time, min(\"value\") as  min_response_time, count(\"value\") as  count    FROM \"http_req_duration\" WHERE \"test_id\" =~ /$test_id/ AND  $timeFilter  GROUP BY \"name\",\"status\",\"method\"  fill(null)",
+                    "rawQuery": true,
+                    "refId": "C",
+                    "resultFormat": "table",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "params": [
+                                    95
+                                ],
+                                "type": "percentile"
+                            }
+                        ]
+                    ],
+                    "tags": []
+                }
+            ],
+            "title": "HTTP REQUEST",
+            "transformations": [
+                {
+                    "id": "organize",
+                    "options": {
+                        "excludeByName": {
+                            "Time": true
+                        },
+                        "indexByName": {
+                            "PERCENTILE_95": 8,
+                            "PERCENTILE_99": 9,
+                            "Time": 0,
+                            "avg_response_time": 6,
+                            "count": 4,
+                            "max_response_time": 7,
+                            "method": 2,
+                            "min_response_time": 5,
+                            "name": 1,
+                            "status": 3
+                        },
+                        "renameByName": {
+                            "PERCENTILE_95": "P95 (Response TIme)",
+                            "PERCENTILE_99": "P99 (Response TIme)",
+                            "Time": "",
+                            "avg_response_time": "AVG (Response TIme)",
+                            "count": "COUNT",
+                            "max_response_time": "MAX (Response TIme)",
+                            "method": "METHOD",
+                            "min_response_time": "MIN (Response TIme)",
+                            "name": "URL",
+                            "status": "STATUS"
+                        }
+                    }
+                }
+            ],
+            "type": "table"
+        },
+        {
+            "datasource": {
+                "type": "influxdb",
+                "uid": "${data_source}"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {
+                        "align": "auto",
+                        "displayMode": "auto",
+                        "filterable": false,
+                        "inspect": false
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "Time"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.width"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 5,
+                "w": 24,
+                "x": 0,
+                "y": 90
+            },
+            "id": 72,
+            "options": {
+                "footer": {
+                    "fields": "",
+                    "reducer": [
+                        "sum"
+                    ],
+                    "show": false
+                },
+                "showHeader": true,
+                "sortBy": []
+            },
+            "pluginVersion": "9.3.8",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${data_source}"
+                    },
+                    "groupBy": [
+                        {
+                            "params": [
+                                "$__interval"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "null"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "measurement": "http_reqs",
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "SELECT sum(\"value\") FROM \"http_reqs\" WHERE \"test_id\" =~ /$test_id/ AND  (\"status\" != '200' AND \"status\" != '201' ) AND $timeFilter group by status, method, \"name\"",
+                    "rawQuery": true,
+                    "refId": "A",
+                    "resultFormat": "table",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "url"
+                                ],
+                                "type": "field"
+                            }
+                        ]
+                    ],
+                    "tags": [
+                        {
+                            "key": "status",
+                            "operator": "!=",
+                            "value": "200"
+                        }
+                    ]
+                }
+            ],
+            "title": "Error Detail",
+            "type": "table"
+        }
+    ],
+    "refresh": "10s",
+    "schemaVersion": 37,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+        "list": [
+            {
+                "current": {
+                    "selected": false,
+                    "text": "myinfluxdb",
+                    "value": "myinfluxdb"
+                },
+                "hide": 2,
+                "includeAll": false,
+                "label": "Data Source",
+                "multi": false,
+                "name": "data_source",
+                "options": [],
+                "query": "influxdb",
+                "queryValue": "",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "type": "datasource"
+            },
+            {
+                "allValue": "*",
+                "current": {
+                    "selected": false,
+                    "text": "All",
+                    "value": "$__all"
+                },
+                "datasource": {
+                    "type": "influxdb",
+                    "uid": "${data_source}"
+                },
+                "definition": "SHOW TAG VALUES FROM \"http_req_duration\" WITH KEY = \"test_id\"",
+                "hide": 0,
+                "includeAll": true,
+                "label": "URL",
+                "multi": false,
+                "name": "test_id",
+                "options": [],
+                "query": "SHOW TAG VALUES FROM \"http_req_duration\" WITH KEY = \"test_id\"",
+                "refresh": 2,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 1,
+                "tagValuesQuery": "",
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "current": {
+                    "selected": true,
+                    "text": "10",
+                    "value": "10"
+                },
+                "hide": 0,
+                "includeAll": false,
+                "label": "interval_value",
+                "multi": false,
+                "name": "interval_value",
+                "options": [
+                    {
+                        "selected": false,
+                        "text": "3",
+                        "value": "3"
+                    },
+                    {
+                        "selected": false,
+                        "text": "5",
+                        "value": "5"
+                    },
+                    {
+                        "selected": true,
+                        "text": "10",
+                        "value": "10"
+                    }
+                ],
+                "query": "3,5,10",
+                "queryValue": "",
+                "skipUrlSync": false,
+                "type": "custom"
+            }
+        ]
+    },
+    "time": {
+        "from": "now-1h",
+        "to": "now"
+    },
+    "timepicker": {
+        "refresh_intervals": [
+            "1s",
+            "10s",
+            "30s",
+            "5m",
+            "30m"
+        ],
+        "time_options": [
+            "5m",
+            "15m",
+            "1h",
+            "6h",
+            "12h",
+            "24h",
+            "2d",
+            "7d",
+            "30d"
+        ]
+    },
+    "timezone": "browser",
+    "title": "k6 Influxdb",
+    "uid": "ReuNR5Aik",
+    "version": 1,
+    "weekStart": ""
+}

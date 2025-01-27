@@ -1,0 +1,44 @@
+- request:
+    method: GET
+    url: /dummy-external/products
+    query:
+      tenant_id: (.*)
+      product_name: (product-abc)
+  response:
+    status: 200
+    file: "product.json"
+
+- request:
+    method: GET
+    url: /products
+    query:
+        product_sku: (.*)
+        param_a: (.*)
+        param_b: (1)
+  response:
+    headers:
+      content-type: application/json; charset=utf-8
+    latency: [1000, 2000]
+    files: [{"name":"response-ok.json", "status": 200}]
+
+- request:
+    method: GET
+    url: /products
+    query:
+        product_sku: (.*)
+        param_a: (.*)
+        param_b: ([0-9]+)
+  response:
+    headers:
+      content-type: application/json; charset=utf-8
+    strategy: random
+    files: [{"name":"response-ok.json", "status": 200}, {"name":"response-error.json","status": 500}]
+
+- request:
+    method: GET
+    url: /delay
+  response:
+    latency: [1000, 10000]
+    headers:
+      content-type: application/json
+    files: [{"name":"response-ok.json", "status": 200}, {"name":"response-error.json","status": 500}]

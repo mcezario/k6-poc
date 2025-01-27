@@ -1,0 +1,96 @@
+version: '3.4'
+
+networks:
+  k6:
+  grafana:
+
+
+services:
+  influxdb:
+    image: influxdb:1.8
+    container_name: influxdb
+    networks:
+      - k6
+      - grafana
+    ports:
+      - "8086:8086"
+    environment:
+      - INFLUXDB_DB=k6
+
+  prometheus:
+    image: prom/prometheus:v2.40.0
+    container_name: prometheus
+    restart: always
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=90d'
+      - '--web.enable-remote-write-receiver'
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - 9090:9090
+    networks:
+      - k6
+      - grafana
+
+  grafana:
+    image: grafana/grafana:9.3.8
+    container_name: grafana
+    networks:
+      - grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_BASIC_ENABLED=false
+    volumes:
+      - ./grafana:/etc/grafana/provisioning/
+
+  k6:
+    image: grafana/k6:latest
+    container_name: k6
+    networks:
+      - k6
+    ports:
+      - "6565:6565"
+    environment:
+      # - K6_OUT=influxdb=http://influxdb:8086/k6
+      - K6_OUT=experimental-prometheus-rw
+      - K6_PROMETHEUS_RW_SERVER_URL=http://prometheus:9090/api/v1/write
+      - K6_PROMETHEUS_RW_TREND_STATS=p(90),p(95),p(99),min,max
+    volumes:
+      - ./k6/scripts:/scripts
+      - ./k6/xk6/k6:/usr/bin/k6
+    # entrypoint: [ "k6", "run", "/scripts/sample.js" ]
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13
+    container_name: postgres
+    environment:
+      POSTGRES_PASSWORD: dbpasswd
+      POSTGRES_USER: postgres
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - ./db_dump:/docker-entrypoint-initdb.d
+    ports:
+      - 5432:5432
+    networks:
+      - k6
+
+  stubmatic:
+    build:
+      context: .
+      dockerfile: ./stubmatic/Dockerfile
+    container_name: stubmatic
+    ports:
+      - '7777:7777'
+    volumes:
+      - ./stubmatic/:/usr/src/app
+    networks:
+      - k6

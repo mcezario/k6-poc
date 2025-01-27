@@ -1,0 +1,14 @@
+# Compiled binaries
+code/dist/
+
+# Mac DS_Store files
+.DS_Store
+
+# intellij files
+.idea
+
+# Crash log files
+crash.log
+
+# Auto generated files
+k6/xk6/k6
